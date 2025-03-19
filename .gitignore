@@ -3,3 +3,30 @@
 
 # Ignore Gradle build output directory
 build
+
+# Ignore Eclipse project files
+.classpath
+
+# Ignore IDEA project files
+*.iml
+*.ipr
+*.iws
+
+# Ignore Gradle files
+.gradle
+
+# Ignore Maven project files
+target/
+
+# Ignore NetBeans project files
+nbproject/
+
+# Ignore Visual Studio Code project files
+.vscode/
+
+# Ignore IntelliJ project files
+.idea/
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
