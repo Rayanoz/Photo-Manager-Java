@@ -1,34 +1,64 @@
 package PhotoApp;
 
 public class Album {
-    // Constructor
+    private String name;
+    private String condition;
+    private PhotoManager manager;
+    private int nbComps;
+    private LinkedList<Photo> photos;
+    private LinkedList<Photo> allPhotos;
+    private LinkedList<Photo> result;
+
     public Album(String name, String condition, PhotoManager manager) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.name = name;
+        this.condition = condition;
+        this.manager = manager;
+        this.allPhotos = manager.getPhotos();
+        this.result = new LinkedList<Photo>();
+        this.nbComps = 0;
+        this.photos = new LinkedList<Photo>();
     }
 
-    // Return the name of the album
     public String getName() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return name;
     }
 
-    // Return the condition associated with the album
     public String getCondition() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return condition;
     }
 
-    // Return the manager
     public PhotoManager getManager() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return manager;
     }
 
-    // Return all photos that satisfy the album condition
     public LinkedList<Photo> getPhotos() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (!photos.empty()) {
+            return result;
+        }
+        allPhotos.findFirst();
+        while (!allPhotos.last()) {
+            Photo currentPhoto = allPhotos.retrieve();
+            if (currentPhoto.getTags().contains(condition)) {
+                result.insert(currentPhoto);
+            }
+            allPhotos.findNext();
+        }
+        return result;
     }
 
-    // Return the number of tag comparisons used to find all photos of the album
     public int getNbComps() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (!photos.empty()) {
+            return nbComps;
+        }
+        allPhotos.findFirst();
+        while (!allPhotos.last()) {
+            Photo currentPhoto = allPhotos.retrieve();
+            if (currentPhoto.getTags().contains(condition)) {
+                result.insert(currentPhoto);
+            }
+            nbComps++;
+            allPhotos.findNext();
+        }
+        return nbComps;
     }
-
 }

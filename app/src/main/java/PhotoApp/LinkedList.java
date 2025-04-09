@@ -1,77 +1,69 @@
 package PhotoApp;
 
+import java.io.File;
+
 public class LinkedList<T> {
     private Node<T> head;
-    private int size;
+    private Node<T> current;
 
     public LinkedList() {
-        head = null;
-        size = 0;
+        head = current = null;
     }
 
-    public void add(T data) {
-        Node<T> newNode = new Node<>(data);
-        if (head == null) {
-            head = newNode;
-        } else {
-            Node<T> current = head;
-            while (current.getNext() != null) {
-                current = current.getNext();
-            }
-            current.setNext(newNode);
-        }
-        size++;
+    public boolean empty() {
+        return head == null;
     }
 
-    public void remove(T data) {
-        if (head == null) {
-            return;
-        }
-        if (head.getData().equals(data)) {
-            head = head.getNext();
-            size--;
-            return;
-        }
-        Node<T> current = head;
-        while (current.getNext() != null) {
-            if (current.getNext().getData().equals(data)) {
-                current.setNext(current.getNext().getNext());
-                size--;
-                return;
-            }
-            current = current.getNext();
-        }
+    public boolean last() {
+        return current.next == null;
     }
 
-    public boolean contains(T data) {
-        Node<T> current = head;
-        while (current != null) {
-            if (current.getData().equals(data)) {
-                return true;
-            }
-            current = current.getNext();
-        }
+    public boolean full() {
         return false;
     }
 
-    public int size() {
-        return size;
+    public void findFirst() {
+        current = head;
     }
 
-    public T get(int index) {
-        if (index < 0 || index >= size) {
-            return null;
-        }
-        Node<T> current = head;
-        for (int i = 0; i < index; i++) {
-            current = current.getNext();
-        }
-        return current.getData();
+    public void findNext() {
+        current = current.next;
     }
 
-    public void clear() {
-        head = null;
-        size = 0;
+    public T retrieve() {
+        return current.data;
+    }
+
+    public void update(T e) {
+        current.data = e;
+    }
+
+    public void insert(T e) {
+        if (empty()) {
+            current = head = new Node<T>(e);
+        } else {
+            Node<T> tmp = current.next;
+            current.next = new Node<T>(e);
+            current = current.next;
+            current.next = tmp;
+        }
+    }
+
+    public void remove() {
+        if (current == head) {
+            head = head.next;
+        } else {
+            Node<T> tmp = head;
+            while (tmp.next != current) {
+                tmp = tmp.next;
+            }
+            tmp.next = current.next;
+        }
+        if (current.next == null) {
+            current = head;
+        } else {
+            current = current.next;
+        }
     }
 
     private static class Node<T> {
@@ -82,17 +74,36 @@ public class LinkedList<T> {
             this.data = data;
             next = null;
         }
+    }
 
-        public T getData() {
-            return data;
-        }
+    // ? Additions to the LinkedList class
 
-        public Node<T> getNext() {
-            return next;
+    public boolean contains(T element) {
+        Node<T> tmp = head;
+        while (tmp != null) {
+            if (tmp.data.equals(element)) {
+                return true;
+            }
+            tmp = tmp.next;
         }
+        return false;
+    }
 
-        public void setNext(Node<T> next) {
-            this.next = next;
+    // for testing purposes
+    public Integer size() {
+        int size = 0;
+        Node<T> tmp = head;
+        while (tmp != null) {
+            size++;
+            tmp = tmp.next;
         }
+        return size;
+    }
+
+    public T getFirst() {
+        if (head == null) {
+            return null; // or throw an exception
+        }
+        return head.data; // Assuming T is of type File
     }
 }

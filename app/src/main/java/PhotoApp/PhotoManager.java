@@ -1,23 +1,55 @@
 package PhotoApp;
 
 public class PhotoManager {
-    // Constructor
+    private LinkedList<Photo> photos; // List of all photos
+
     public PhotoManager() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        photos = new LinkedList<Photo>();
     }
 
-    // Return all managed photos
     public LinkedList<Photo> getPhotos() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (photos.empty()) {
+            return null;
+        } else {
+            return photos;
+        }
     }
 
-    // Add a photo
     public void addPhoto(Photo p) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (p == null) {
+            throw new IllegalArgumentException("Photo cannot be null");
+        }
+        photos.insert(p);
     }
 
-    // Delete a photo
     public void deletePhoto(String path) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (path == null) {
+            throw new IllegalArgumentException("Path cannot be null");
+        }
+        photos.findFirst();
+        while (!photos.last()) {
+            Photo currentPhoto = photos.retrieve();
+            if (currentPhoto.getPath().equals(path)) {
+                photos.remove();
+                return;
+            }
+            photos.findNext();
+        }
+        // If the photo is not found, do nothing
+    }
+
+    public Photo getPhoto(String string) {
+        if (string == null) {
+            throw new IllegalArgumentException("Path cannot be null");
+        }
+        photos.findFirst();
+        while (!photos.last()) {
+            Photo currentPhoto = photos.retrieve();
+            if (currentPhoto.getPath().equals(string)) {
+                return currentPhoto;
+            }
+            photos.findNext();
+        }
+        return null; // If the photo is not found, return null
     }
 }
