@@ -30,7 +30,7 @@ public class Album {
     }
 
     public LinkedList<Photo> getPhotos() {
-        // get rif of the condition"AND" and get the photos of the album.
+        // get rid of the condition"AND" and get the photos of the album.
         String[] tags = condition.split(" AND ");
         for (int i = 0; i < tags.length; i++) {
             tags[i] = tags[i].trim();
@@ -38,13 +38,13 @@ public class Album {
         // iterate in every photo and check if the tags of the photo are a subset of the
         // tags.
         // if it is, add the photo to the album.
-        LinkedList<Photo> photos = new LinkedList<Photo>();
+        LinkedList<Photo> res = new LinkedList<Photo>();
         manager.getPhotos().findFirst();
         while (!manager.getPhotos().last()) {
             Photo photo = manager.getPhotos().retrieve();
             if (photo != null) {
                 if (subset(photo.getTags(), tags)) {
-                    photos.insert(photo);
+                    res.insert(photo);
                 }
             }
             manager.getPhotos().findNext();
@@ -52,10 +52,10 @@ public class Album {
         if (manager.getPhotos().retrieve() != null) {
             Photo photo = manager.getPhotos().retrieve();
             if (subset(photo.getTags(), tags)) {
-                photos.insert(photo);
+                res.insert(photo);
             }
         }
-        return photos;
+        return res;
 
     }
 
@@ -81,6 +81,63 @@ public class Album {
                 return false;
         }
         return true;
+    }
+
+    public LinkedList<Photo> ANDOperation(LinkedList<Photo> album1, LinkedList<Photo> album2) {
+        LinkedList<Photo> result = new LinkedList<Photo>();
+        album1.findFirst();
+        while (!album1.last()) {
+            Photo photo = album1.retrieve();
+            if (photo != null) {
+                // Check if photo exists in album2 by iterating through it
+                album2.findFirst();
+                boolean found = false;
+                while (!album2.last() && !found) {
+                    Photo photo2 = album2.retrieve();
+                    if (photo2 != null && photo2.getPath().equals(photo.getPath())) {
+                        found = true;
+                    }
+                    album2.findNext();
+                }
+                // Check the last element if not found yet
+                if (!found && album2.retrieve() != null &&
+                        album2.retrieve().getPath().equals(photo.getPath())) {
+                    found = true;
+                }
+
+                if (found) {
+                    result.insert(photo);
+                }
+            }
+            album1.findNext();
+        }
+
+        // Check the last element of album1
+        if (album1.retrieve() != null) {
+            Photo photo = album1.retrieve();
+
+            // Check if photo exists in album2
+            album2.findFirst();
+            boolean found = false;
+            while (!album2.last() && !found) {
+                Photo photo2 = album2.retrieve();
+                if (photo2 != null && photo2.getPath().equals(photo.getPath())) {
+                    found = true;
+                }
+                album2.findNext();
+            }
+            // Check the last element
+            if (!found && album2.retrieve() != null &&
+                    album2.retrieve().getPath().equals(photo.getPath())) {
+                found = true;
+            }
+
+            if (found) {
+                result.insert(photo);
+            }
+        }
+
+        return result;
     }
 
 }
