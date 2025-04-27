@@ -21,32 +21,38 @@ public class PhotoManager {
         }
         photos.insert(p);
     }
-
+    //Fixed getPhoto to handle last node case, like deletePhoto
     public void deletePhoto(String path) {
         if (path == null) {
             throw new IllegalArgumentException("Path cannot be null");
         }
         photos.findFirst();
-        while (!photos.last()) {
+        while (true) {
             Photo currentPhoto = photos.retrieve();
             if (currentPhoto.getPath().equals(path)) {
                 photos.remove();
                 return;
             }
+            if(photos.last()){
+                break;
+            }
             photos.findNext();
         }
         // If the photo is not found, do nothing
     }
-
+    //Fixed getPhoto to handle last node case, like deletePhoto
     public Photo getPhoto(String string) {
         if (string == null) {
             throw new IllegalArgumentException("Path cannot be null");
         }
         photos.findFirst();
-        while (!photos.last()) {
+        while (true) {
             Photo currentPhoto = photos.retrieve();
             if (currentPhoto.getPath().equals(string)) {
                 return currentPhoto;
+            }
+            if(photos.last()){
+                break;
             }
             photos.findNext();
         }
