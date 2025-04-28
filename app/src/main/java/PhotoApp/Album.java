@@ -58,16 +58,21 @@ public class Album {
         return res;
 
     }
-
+    //Enhanced tagContain method to handle last node case
     public boolean tagContain(LinkedList<String> tags, String tag) {
         tags.findFirst();
         while (!tags.last()) {
-            if (tags.retrieve().equals(tag))
+            nbComps++; // Increase comparison counter
+            if (tags.retrieve().equals(tag)) {
                 return true;
+            }
             tags.findNext();
         }
-        if (tags.retrieve().equals(tag))
+        // Final comparison for the last tag
+        nbComps++;
+        if (tags.retrieve().equals(tag)) {
             return true;
+        }
         return false;
     }
 
@@ -139,5 +144,7 @@ public class Album {
 
         return result;
     }
+
+ 
 
 }
