@@ -1,8 +1,12 @@
 package PhotoApp;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 public class AlbumTest {
     private PhotoManager manager;
@@ -56,12 +60,12 @@ public class AlbumTest {
     }
 
     // Create an album with a condition
-    album=new Album("Nature Album","nature",manager);
+    // album=new Album("Nature Album","nature",manager);
 
-    // Set up test photo lists for AND operation testing
-    photoList1=new LinkedList<>();photoList1.insert(photo1);photoList1.insert(photo2);
+    // // Set up test photo lists for AND operation testing
+    // photoList1=new LinkedList<>();photoList1.insert(photo1);photoList1.insert(photo2);
 
-    photoList2=new LinkedList<>();photoList2.insert(photo1);photoList2.insert(photo3);
+    // photoList2=new LinkedList<>();photoList2.insert(photo1);photoList2.insert(photo3);
 
     @Test
     public void testConstructor() {
