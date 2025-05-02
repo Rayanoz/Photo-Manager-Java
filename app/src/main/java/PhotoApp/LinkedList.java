@@ -1,7 +1,5 @@
 package PhotoApp;
 
-import java.io.File;
-
 public class LinkedList<T> {
     private Node<T> head;
     private Node<T> current;
@@ -31,6 +29,9 @@ public class LinkedList<T> {
     }
 
     public T retrieve() {
+        if (current == null) {
+            return null; // or throw an exception
+        }
         return current.data;
     }
 
@@ -104,6 +105,6 @@ public class LinkedList<T> {
         if (head == null) {
             return null; // or throw an exception
         }
-        return head.data; // Assuming T is of type File
+        return head.data;
     }
 }
