@@ -1,7 +1,7 @@
 package PhotoApp;
 
 public class Photo {
-    private String path;
+    String path;
     private LinkedList<String> tags;
 
     public Photo(String path, LinkedList<String> tags) {

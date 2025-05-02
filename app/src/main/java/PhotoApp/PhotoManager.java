@@ -1,7 +1,7 @@
 package PhotoApp;
 
 public class PhotoManager {
-    private LinkedList<Photo> photos; // List of all photos
+    LinkedList<Photo> photos; // List of all photos
 
     public PhotoManager() {
         photos = new LinkedList<Photo>();
@@ -21,26 +21,31 @@ public class PhotoManager {
         }
         photos.insert(p);
     }
-    //Fixed getPhoto to handle last node case, like deletePhoto
+
+    // Fixed getPhoto to handle last node case, like deletePhoto
     public void deletePhoto(String path) {
         if (path == null) {
-            throw new IllegalArgumentException("Path cannot be null");
+            return;
         }
         photos.findFirst();
         while (true) {
             Photo currentPhoto = photos.retrieve();
+            if (currentPhoto == null) {
+                break; // No more photos to check
+            }
             if (currentPhoto.getPath().equals(path)) {
                 photos.remove();
                 return;
             }
-            if(photos.last()){
+            if (photos.last()) {
                 break;
             }
             photos.findNext();
         }
         // If the photo is not found, do nothing
     }
-    //Fixed getPhoto to handle last node case, like deletePhoto
+
+    // Fixed getPhoto to handle last node case, like deletePhoto
     public Photo getPhoto(String string) {
         if (string == null) {
             throw new IllegalArgumentException("Path cannot be null");
@@ -51,7 +56,7 @@ public class PhotoManager {
             if (currentPhoto.getPath().equals(string)) {
                 return currentPhoto;
             }
-            if(photos.last()){
+            if (photos.last()) {
                 break;
             }
             photos.findNext();
