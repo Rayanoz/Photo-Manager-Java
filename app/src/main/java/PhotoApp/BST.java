@@ -185,4 +185,18 @@ public class BST<T> {
             right = r;
         }
     }
+
+    // * In-order traversal of the BST to print the keys and values in sorted order
+    // For Testing Porpuses*/
+    public void inOrder() {
+        inOrderHelper(root);
+    }
+
+    public void inOrderHelper(BSTNode<T> node) {
+        if (node != null) {
+            inOrderHelper(node.left);
+            System.out.println("Key: " + node.key + ", Value: " + node.data);
+            inOrderHelper(node.right);
+        }
+    }
 }
