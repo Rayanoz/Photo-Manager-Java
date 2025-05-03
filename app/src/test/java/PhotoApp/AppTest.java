@@ -81,8 +81,6 @@ class AppTest {
     @DisplayName("Album creation and query test")
     void testAlbumCreation() {
         Album album1 = new Album("Album1", "bear", manager);
-        Album album2 = new Album("Album2", "animal AND grass", manager);
-
         assertEquals("Album1", album1.getName());
         assertEquals("bear", album1.getCondition());
 
@@ -120,8 +118,8 @@ class AppTest {
         LinkedList<String> singleTag = App.toTagsLinkedList("onlytag");
         assertEquals(1, singleTag.size());
         assertTrue(singleTag.contains("onlytag"));
-    } 
-    
+    }
+    //This test covers both AND && OR operations 
     @Test
     @DisplayName("Complex album query test")
     void testComplexAlbumQuery() {
@@ -133,4 +131,37 @@ class AppTest {
         assertTrue(albumPhotos.contains(photo3));
         assertFalse(albumPhotos.contains(photo2));
     }
-} 
+
+    @Test
+    @DisplayName("Album should return empty for unknown condition")
+    void testEmptyAlbumOnUnknownCondition() {
+        Album album = new Album("EmptyAlbum", "unknownTag", manager);
+        LinkedList<Photo> photos = album.getPhotos();
+        assertNotNull(photos);
+        assertEquals(0, photos.size());
+    }
+
+    @Test
+    @DisplayName("Manager should ignore deletion of nonexistent photo")
+    void testManagerDeleteNonexistent() {
+        manager.deletePhoto("does-not-exist.jpg");
+        LinkedList<Photo> photos = manager.getPhotos();
+        assertEquals(3, photos.size());
+    }
+
+    @Test
+    @DisplayName("Duplicate insertion test")
+    void testDuplicateInsertion() {
+        manager.addPhoto(photo2);
+        assertEquals(4, manager.getPhotos().size());
+    }
+
+    @Test
+    @DisplayName("Album comparison counter increments correctly")
+    void testNbCompsCount() {
+        Album album = new Album("CountAlbum", "animal AND grass", manager);
+        album.getPhotos();
+        assertTrue(album.getNbComps() > 0);
+    }
+
+}
