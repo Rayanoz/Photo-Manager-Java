@@ -6,11 +6,11 @@ package PhotoApp;
 public class App {
     public static void main(String[] args) {
         PhotoManager manager = new PhotoManager();
-        Photo photo1 = new Photo("hedgehog.jpg", toTagsLinkedList("animal, hedgehog, apple,grass, green"));
+        Photo photo1 = new Photo("hedgehog.jpg", toTagsLinkedList("animal, hedgehog,apple,grass, green"));
         manager.addPhoto(photo1);
-        Photo photo2 = new Photo("bear.jpg", toTagsLinkedList("animal, bear, cab,grass, wind"));
+        Photo photo2 = new Photo("bear.jpg", toTagsLinkedList("animal, bear,  cab,grass, wind"));
         manager.addPhoto(photo2);
-        Photo photo3 = new Photo("orange-butterfly.jpg", toTagsLinkedList("insect, butterfly, flower, color"));
+        Photo photo3 = new Photo("orange-butterfly.jpg", toTagsLinkedList("insect,   butterfly, flower, color"));
         manager.addPhoto(photo3);
         Album album1 = new Album("Album1", "bear", manager);
         Album album2 = new Album("Album2", "animal AND grass", manager);
@@ -25,6 +25,46 @@ public class App {
         // You can write a method that prints the list of photos in album2.
         System.out.println("Delete the photo ’bear.jpg’:");
         manager.deletePhoto("bear.jpg");
+        PhotoManager m1 = new PhotoManager();
+        InvIndexPhotoManager invManager = new InvIndexPhotoManager();
+
+        // Add the same photos to both managers
+        Photo p1 = new Photo("hedgehog.jpg", toTagsLinkedList("animal, hedgehog, apple, grass, green"));
+        Photo p2 = new Photo("bear.jpg", toTagsLinkedList("animal, bear, cab, grass, wind"));
+        Photo p3 = new Photo("orange-butterfly.jpg", toTagsLinkedList(
+                "insect, butterfly, flower, color"));
+        m1.addPhoto(p1);
+        m1.addPhoto(p2);
+        m1.addPhoto(p3);
+        invManager.addPhoto(p1);
+        invManager.addPhoto(p2);
+        invManager.addPhoto(p3);
+
+        // Use the same conditions for both types of albums
+        String[] conditions = {
+                "bear",
+                "animal AND grass",
+                "animal OR flower",
+                "animal AND grass OR flower"
+        };
+
+        for (String cond : conditions) {
+            Album albumLinear = new Album("LinearAlbum", cond, m1);
+            Album albumInvIdx = new Album("InvIdxAlbum", cond, invManager);
+
+            // Ensure getPhotos() does not return null
+            LinkedList<Photo> linearPhotos = albumLinear.getPhotos();
+            LinkedList<Photo> invIdxPhotos = albumInvIdx.getPhotosBST();
+            int linearComps = albumLinear.getNbComps();
+            int invIdxComps = albumInvIdx.getNbComps();
+
+            System.out.println("Condition: " + cond);
+            System.out.println("Linear scan comparisons: " + linearComps);
+            System.out.println("Inverted index comparisons: " + invIdxComps);
+            System.out.println("Linear scan photos: " + (linearPhotos == null ? "null" : linearPhotos.size()));
+            System.out.println("Inverted index photos: " + (invIdxPhotos == null ? "null" : invIdxPhotos.size()));
+            System.out.println();
+        }
     }
 
     public static LinkedList<String> toTagsLinkedList(String tags) {
@@ -35,5 +75,4 @@ public class App {
         }
         return result;
     }
-
 }

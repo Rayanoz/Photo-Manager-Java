@@ -199,4 +199,25 @@ public class BST<T> {
             inOrderHelper(node.right);
         }
     }
+
+    // returns the number of comparisons (for performance analysis)
+    public int BSTNbComps(String tkey) {
+        int i = 0;
+        BSTNode<T> p = root, q = root;
+        if (empty())
+            return 0;
+        while (p != null) {
+            q = p;
+            i++;
+            if (p.key.equals(tkey)) {
+                current = p;
+                return i; // key found
+            } else if (tkey.compareTo(p.key) < 0)
+                p = p.left;
+            else
+                p = p.right;
+        }
+        current = q;
+        return i;
+    }
 }

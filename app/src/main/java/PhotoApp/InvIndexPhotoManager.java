@@ -21,7 +21,7 @@ public class InvIndexPhotoManager extends PhotoManager {
 
             if (invertedIndex.findkey(tag)) { // Tag already exists
                 photos = invertedIndex.retrieve();
-                if (!photos.contains(photo)) {
+                if (!contains(photo, photos)) {
                     photos.insert(photo);
                 }
             } else { // Tag does not exist
@@ -94,7 +94,23 @@ public class InvIndexPhotoManager extends PhotoManager {
         deletePhotoHelper(path, node.right, tagsToRemove);
     }
 
+    public boolean contains(Photo p, LinkedList<Photo> photos) {
+        photos.findFirst();
+        while (true) {
+            Photo currentPhoto = photos.retrieve();
+            if (currentPhoto.getPath().equals(p.getPath())) {
+                return true;
+            }
+            if (photos.last()) {
+                break;
+            }
+            photos.findNext();
+        }
+        return false;
+    }
+
     public BST<LinkedList<Photo>> getInvIndexPhotos() {
         return invertedIndex;
     }
+
 }

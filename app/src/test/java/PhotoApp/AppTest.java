@@ -119,7 +119,8 @@ class AppTest {
         assertEquals(1, singleTag.size());
         assertTrue(singleTag.contains("onlytag"));
     }
-    //This test covers both AND && OR operations 
+
+    // This test covers both AND && OR operations
     @Test
     @DisplayName("Complex album query test")
     void testComplexAlbumQuery() {
@@ -162,6 +163,63 @@ class AppTest {
         Album album = new Album("CountAlbum", "animal AND grass", manager);
         album.getPhotos();
         assertTrue(album.getNbComps() > 0);
+    }
+
+    @Test
+    @DisplayName("Inverted index album single tag query")
+    void testInvIndexAlbumSingleTag() {
+        InvIndexPhotoManager invManager = new InvIndexPhotoManager();
+        invManager.addPhoto(photo1);
+        invManager.addPhoto(photo2);
+        invManager.addPhoto(photo3);
+
+        Album album = new Album("InvAlbum1", "bear", invManager);
+        LinkedList<Photo> photos = album.getPhotosBST(); // or getPhotos() if implemented for invManager
+        assertEquals(1, photos.size());
+        assertEquals("bear.jpg", photos.getFirst().getPath());
+    }
+
+    @Test
+    @DisplayName("Inverted index album AND query")
+    void testInvIndexAlbumAndQuery() {
+        InvIndexPhotoManager invManager = new InvIndexPhotoManager();
+        invManager.addPhoto(photo1);
+        invManager.addPhoto(photo2);
+        invManager.addPhoto(photo3);
+
+        Album album = new Album("InvAlbum2", "animal AND grass", invManager);
+        LinkedList<Photo> photos = album.getPhotosBST();
+        assertEquals(2, photos.size());
+        assertTrue(photos.contains(photo1));
+        assertTrue(photos.contains(photo2));
+    }
+
+    @Test
+    @DisplayName("Inverted index album OR query")
+    void testInvIndexAlbumOrQuery() {
+        InvIndexPhotoManager invManager = new InvIndexPhotoManager();
+        invManager.addPhoto(photo1);
+        invManager.addPhoto(photo2);
+        invManager.addPhoto(photo3);
+
+        Album album = new Album("InvAlbum3", "green OR flower", invManager);
+        LinkedList<Photo> photos = album.getPhotosBST();
+        assertTrue(photos.contains(photo1));
+        assertTrue(photos.contains(photo3));
+        assertFalse(photos.contains(photo2));
+    }
+
+    @Test
+    @DisplayName("Inverted index album returns empty for unknown tag")
+    void testInvIndexAlbumUnknownTag() {
+        InvIndexPhotoManager invManager = new InvIndexPhotoManager();
+        invManager.addPhoto(photo1);
+        invManager.addPhoto(photo2);
+
+        Album album = new Album("InvAlbumEmpty", "notatag", invManager);
+        LinkedList<Photo> photos = album.getPhotosBST();
+        assertNotNull(photos);
+        assertEquals(0, photos.size());
     }
 
 }

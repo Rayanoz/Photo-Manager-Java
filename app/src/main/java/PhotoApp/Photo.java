@@ -17,4 +17,17 @@ public class Photo {
         return tags;
     }
 
+    public BST<String> getTagsBST() {
+        BST<String> bst = new BST<>();
+        tags.findFirst();
+        while (true) {
+            String tag = tags.retrieve();
+            bst.insert(tag, tag);
+            if (tags.last()) {
+                break;
+            }
+            tags.findNext();
+        }
+        return bst;
+    }
 }

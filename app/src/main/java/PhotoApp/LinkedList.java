@@ -77,7 +77,7 @@ public class LinkedList<T> {
         }
     }
 
-    // ? Additions to the LinkedList class
+    // ? Additions to the LinkedList class "FOr testing purposes"
 
     public boolean contains(T element) {
         Node<T> tmp = head;
@@ -90,7 +90,6 @@ public class LinkedList<T> {
         return false;
     }
 
-    // for testing purposes
     public Integer size() {
         int size = 0;
         Node<T> tmp = head;
