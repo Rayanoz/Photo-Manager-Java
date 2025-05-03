@@ -113,30 +113,6 @@ public class Album {
         return false;
     }
 
-    public boolean tagContain(BST<LinkedList<String>> tags, String tag) {
-        if (tags == null || tag == null) {
-            return false;
-        }
-
-        nbComps = 0; // Reset comparison counter
-        BST<LinkedList<String>>.BSTNode<LinkedList<String>> current = tags.root;
-
-        while (current != null) {
-            nbComps++; // Increment for each comparison in BST traversal
-            int comparison = tag.compareTo(current.key);
-
-            if (comparison == 0) {
-                return true;
-            } else if (comparison < 0) {
-                current = current.left;
-            } else {
-                current = current.right;
-            }
-        }
-
-        return false;
-    }
-
     public boolean BSTtagContain(BST<String> tags, String tag) {
         BST<String>.BSTNode<String> current = tags.root;
         while (current != null) {
@@ -151,16 +127,6 @@ public class Album {
             }
         }
         return false;
-    }
-
-    // Overload subset to use BST<String>
-    public boolean subset(BST<String> tags, String[] tagArr) {
-        for (int i = 0; i < tagArr.length; i++) {
-            if (!BSTtagContain(tags, tagArr[i])) {
-                return false;
-            }
-        }
-        return true;
     }
 
     public LinkedList<Photo> getTagPhoto(String tag) {
